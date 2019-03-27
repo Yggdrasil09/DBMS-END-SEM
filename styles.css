@@ -35,6 +35,8 @@ body{
 }
 
 .col p{
+    font-family:title;
+    font-size:7vh;
     text-align: center;
     color:white;
 }
@@ -56,4 +58,24 @@ body{
     min-height:100%;
     background: radial-gradient(ellipse at center,  rgb(99, 204, 104) 0%,rgb(16, 173, 42) 100%);
     border-radius:1vh;
+}
+
+form{
+    padding:2vh;
+    display:block;
+    text-align:center;
+}
+
+#form1.active,#form2.active,#form3.active,#form4.active,#form5.active{
+    display:none;
+}
+
+.col p{
+    border:2px solid white;
+    background:rgba(0,0,0,0.5);
+}
+
+.col p.active{
+    border:none;
+    background:rgba(0,0,0,0);
 }

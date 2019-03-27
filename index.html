@@ -9,6 +9,7 @@
 
     <link rel="stylesheet" href="styles.css"/>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-2.2.4.js" integrity="sha256-iT6Q9iMJYuQiMWNd9lDyBUStIq/8PuOW33aOqmvFpqI=" crossorigin="anonymous"></script>
 </head>
 <body>
     <div class="container">
@@ -16,53 +17,52 @@
             <h1>5 Amigos</h1>
         </div>
         <div class="row">
-            <div class="col"><p>Chef</p></div>
-            <div class="col"><p>Manager</p></div>
-            <div class="col"><p>Waiter</p></div>
-            <div class="col"><p>Items</p></div>
-            <div class="col"><p>Bill</p></div>
+            <div class="col" ><p class="active" id="chef">Chef</p></div>
+            <div class="col" ><p class="active" id="manager">Manager</p></div>
+            <div class="col"><p class="active" id="waiter">Waiter</p></div>
+            <div class="col"><p class="active" id="item">Order</p></div>
+            <div class="col"><p class="active" id="bill">Bill</p></div>
         </div>
         <div class="row menu-card">
             <div class="col-sm-3"></div>
             <div class="col-sm-6 menu">
-                <form>
+                <form id="form1" class="active">
                     Chef :<br>
                     <input type="text" name="name"><br>
                     Id no. :<br>
-                    <input type="text" name="id"><br>
+                    <input type="text" name="id"><br><br>
                     <button>Submit</button>
                 </form>
-                <form>
+                <form id="form2" class="active">
                     Manager :<br>
                     <input type="text" name="name"><br>
                     Id no. :<br>
                     <input type="text" name="id"><br>
                     Contact no. :<br>
-                    <input type="text" name="id"><br>
+                    <input type="text" name="id"><br><br>
                     <button>Submit</button>
                 </form>
-                <form>
-                    Item :<br>
+                <form id="form3" class="active">
+                    Waiter :<br>
                     <input type="text" name="name"><br>
-                    Price :<br>
-                    <input type="text" name="name"><br>
-                    Description :<br>
-                    <input type="text" name="name"><br>
-                    Quantity :<br>
-                    <input type="text" name="name"><br>
+                    Id no. :<br>
+                    <input type="text" name="Id"><br><br>
                     <button>Submit</button>
                 </form>
-                <form>
+                <form id="form4" class="active">
+                    Order no. :<br>
+                    <input type="text" name="name"><br>
+                    Number of items :<br>
+                    <input type="text" name="name"><br><br>
+                    <button>Submit</button>
+                </form>
+                <form id="form5" class="active">
                     Bill no. :<br>
                     <input type="text" name="name"><br>
                     Price :<br>
                     <input type="text" name="name"><br>
-                </form>
-                <form>
-                    Waiter :<br>
-                    <input type="text" name="name"><br>
-                    Id no. :<br>
-                    <input type="text" name="Id"><br>
+                    Customer :<br>
+                    <input type="text" name="name"><br><br>
                     <button>Submit</button>
                 </form>
             </div>
@@ -70,8 +70,10 @@
         </div>
     </div>
     <script>
+        let list=[["chef",1],["manager",0],["waiter",0],["item",0],["bill",0]];
         require('./index');
     </script>
+    <script src="click.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 </body>
 </html>

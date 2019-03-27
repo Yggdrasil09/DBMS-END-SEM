@@ -4,7 +4,8 @@
   "description": "A lab end sem project",
   "main": "main.js",
   "scripts": {
-    "test": "electromon ."
+    "test": "electromon .",
+    "start": "electron ."
   },
   "author": "P Karthik Chowdary",
   "license": "MIT",

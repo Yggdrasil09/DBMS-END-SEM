@@ -1,0 +1,19 @@
+{
+  "name": "dbms_ends",
+  "version": "1.0.0",
+  "description": "A lab end sem project",
+  "main": "main.js",
+  "scripts": {
+    "test": "electromon ."
+  },
+  "author": "P Karthik Chowdary",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^4.1.1"
+  },
+  "dependencies": {
+    "electromon": "^1.0.10",
+    "mysql": "^2.16.0",
+    "nodemon": "^1.18.10"
+  }
+}

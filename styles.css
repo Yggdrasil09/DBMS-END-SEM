@@ -1,0 +1,43 @@
+html{
+    min-height:100%;
+}
+
+body{
+    min-height:100%;
+    background-image : url('./images/banner-bg.jpg');
+    background-size : 100% 100%;
+    background-repeat : no-repeat;
+}
+
+.container .row h1{
+    display:block;
+    margin-left:auto;
+    margin-right:auto;
+    color:white;
+}
+
+.container .row h3{
+    display:block;
+    margin-left:auto;
+    margin-right:auto;
+    color:yellowgreen;
+}
+
+.container .row form{
+    display:block;
+    margin-left:auto;
+    margin-right:auto;
+    color:white;
+    display:block;
+}
+
+.container,.menu-card{
+    min-height:100%;
+}
+
+.menu{
+    min-height:100%;
+    background-image: url('./images/menu.jpeg');
+    background-size : 100% 100%;
+    background-repeat : no-repeat;
+}

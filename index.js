@@ -1,3 +1,4 @@
+const { remote } = require('electron')
 const mysql = require('mysql');
 
 var connection = mysql.createConnection({
@@ -23,12 +24,11 @@ document.getElementById("button1").addEventListener('click',function(){
 })
 
 document.getElementById("showtable1").addEventListener('click',function(){
-
-	let sql = "select * from chef";
-	connection.query(sql,function(err,result){
-		if(err)  throw err;
-		console.log(result);
+	let win1 = new remote.BrowserWindow({
+		parent: remote.getCurrentWindow(),
+		modal: true
 	})
+	win1.loadFile('table.html')
 })
 
 document.getElementById("button2").addEventListener('click',function(){
@@ -43,12 +43,11 @@ document.getElementById("button2").addEventListener('click',function(){
 })
 
 document.getElementById("showtable2").addEventListener('click',function(){
-
-	let sql = "select * from manager";
-	connection.query(sql,function(err,result){
-		if(err)  throw err;
-		console.log(result);
+	let win1 = new remote.BrowserWindow({
+		parent: remote.getCurrentWindow(),
+		modal: true
 	})
+	win1.loadFile('manager.html')
 })
 
 document.getElementById("button3").addEventListener('click',function(){
@@ -62,12 +61,11 @@ document.getElementById("button3").addEventListener('click',function(){
 })
 
 document.getElementById("showtable3").addEventListener('click',function(){
-
-	let sql = "select * from waiter";
-	connection.query(sql,function(err,result){
-		if(err)  throw err;
-		console.log(result);
+	let win1 = new remote.BrowserWindow({
+		parent: remote.getCurrentWindow(),
+		modal: true
 	})
+	win1.loadFile('waiter.html')
 })
 
 document.getElementById("button4").addEventListener('click',function(){
@@ -81,12 +79,11 @@ document.getElementById("button4").addEventListener('click',function(){
 })
 
 document.getElementById("showtable4").addEventListener('click',function(){
-
-	let sql = "select * from orders";
-	connection.query(sql,function(err,result){
-		if(err)  throw err;
-		console.log(result);
+	let win1 = new remote.BrowserWindow({
+		parent: remote.getCurrentWindow(),
+		modal: true
 	})
+	win1.loadFile('order.html')
 })
 
 document.getElementById("button5").addEventListener('click',function(){
@@ -101,10 +98,9 @@ document.getElementById("button5").addEventListener('click',function(){
 })
 
 document.getElementById("showtable5").addEventListener('click',function(){
-
-	let sql = "select * from bill";
-	connection.query(sql,function(err,result){
-		if(err)  throw err;
-		console.log(result);
+	let win1 = new remote.BrowserWindow({
+		parent: remote.getCurrentWindow(),
+		modal: true
 	})
+	win1.loadFile('bill.html')
 })

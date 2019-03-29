@@ -79,3 +79,13 @@ form{
     border:none;
     background:rgba(0,0,0,0);
 }
+
+.table-row{
+    height:95vh;
+}
+
+.table{
+    min-height:100%;
+    background: radial-gradient(ellipse at center,  rgb(99, 204, 104) 0%,rgb(0, 129, 22) 100%);
+    border-radius:1vh;
+}

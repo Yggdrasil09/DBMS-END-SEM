@@ -56,7 +56,7 @@ body{
 
 .menu{
     min-height:100%;
-    background: radial-gradient(ellipse at center,  rgb(99, 204, 104) 0%,rgb(16, 173, 42) 100%);
+    background: radial-gradient(ellipse at center,  rgb(99, 204, 104) 0%,rgb(0, 129, 22) 100%);
     border-radius:1vh;
 }
 

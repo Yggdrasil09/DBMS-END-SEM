@@ -33,6 +33,7 @@
                     <input id="chefid" type="text" name="id"><br><br>
                     <button name="data" type="button" id="button1">Submit</button>
                     <button type="button" id="showtable1">Show Table</button>
+                    <button type="button" id="search1">search</button>
                 </form>
                 <form id="form2" class="active">
                     Manager :<br>
@@ -43,6 +44,7 @@
                     <input id="managercontact" type="text" name="id"><br><br>
                     <button name="data" type="button" id="button2">Submit</button>
                     <button type="button" id="showtable2">Show Table</button>
+                    <button type="button" id="search2">search</button>
                 </form>
                 <form id="form3" class="active">
                     Waiter :<br>
@@ -51,6 +53,7 @@
                     <input id="waiterid" type="text" name="Id"><br><br>
                     <button name="data" type="button" id="button3">Submit</button>
                     <button type="button" id="showtable3">Show Table</button>
+                    <button type="button" id="search3">search</button>
                 </form>
                 <form id="form4" class="active">
                     Order no. :<br>
@@ -59,6 +62,7 @@
                     <input id="orderitems" type="text" name="name"><br><br>
                     <button name="data" type="button" id="button4">Submit</button>
                     <button type="button" id="showtable4">Show Table</button>
+                    <button type="button" id="search4">search</button>
                 </form>
                 <form id="form5" class="active">
                     Bill no. :<br>
@@ -69,6 +73,7 @@
                     <input id="customer" type="text" name="name"><br><br>
                     <button name="data" type="button" id="button5">Submit</button>
                     <button type="button" id="showtable5">Show Table</button>
+                    <button type="button" id="search5">search</button>
                 </form>
             </div>
             <div class="col-sm-3"></div>                                                                                                                                      
@@ -77,6 +82,176 @@
     <script>
         let list=[["chef",1],["manager",0],["waiter",0],["item",0],["bill",0]];
         require('./index');
+
+        const { remote } = require('electron')
+        const mysql = require('mysql');
+
+         var connection = mysql.createConnection({
+           host:'localhost',
+           user:'root',
+            password:'12345678',
+            database:'amigos'
+            });
+
+        connection.connect(function(err){
+        if(err) throw err;
+        console.log('connected');
+        })
+
+    document.getElementById("button1").addEventListener('click',function(){
+        
+        let sql = "Insert into chef (chef_name,Id_no) VALUES ('"+document.getElementById("chefname").value+"','"+document.getElementById('chefid').value+"')";
+        connection.query(sql,function(err,result){
+            if(err) throw err;
+        })
+        document.getElementById("chefname").value = "";
+        document.getElementById('chefid').value = "";
+    })
+
+    document.getElementById("showtable1").addEventListener('click',function(){
+        let win1 = new remote.BrowserWindow({
+            parent: remote.getCurrentWindow(),
+            modal: true
+        })
+        win1.loadFile('table.html')
+    })
+
+    document.getElementById("search1").addEventListener('click',function(){
+        let win1 = new remote.BrowserWindow({
+            parent: remote.getCurrentWindow(),
+            modal: true
+        })   
+        let search_value = document.getElementById('chefid').value;
+        win1.loadFile('chefs.html')
+        win1.webContents.on('did-finish-load',()=>{
+            console.log(search_value);
+            win1.webContents.send('value',search_value)
+        })
+    })
+
+    document.getElementById("button2").addEventListener('click',function(){
+        
+        let sql = "Insert into manager (manager_name,Id_no,contact_no) VALUES ('"+document.getElementById("managername").value+"','"+document.getElementById('managerid').value+"','"+document.getElementById('managercontact').value+"')";
+        connection.query(sql,function(err,result){
+            if(err) throw err;
+        })
+        document.getElementById("managername").value = "";
+        document.getElementById('managerid').value = "";
+        document.getElementById('managercontact').value="";
+    })
+
+    document.getElementById("showtable2").addEventListener('click',function(){
+        let win1 = new remote.BrowserWindow({
+            parent: remote.getCurrentWindow(),
+            modal: true
+        })
+        win1.loadFile('manager.html')
+    })
+
+    document.getElementById("search2").addEventListener('click',function(){
+        let win1 = new remote.BrowserWindow({
+            parent: remote.getCurrentWindow(),
+            modal: true
+        })   
+        let search_value = document.getElementById('managerid').value;
+        win1.loadFile('managers.html')
+        win1.webContents.on('did-finish-load',()=>{
+            console.log(search_value);
+            win1.webContents.send('value',search_value)
+        })
+    })
+
+    document.getElementById("button3").addEventListener('click',function(){
+        
+        let sql = "Insert into waiter (waiter_name,Id_no) VALUES ('"+document.getElementById("waitername").value+"','"+document.getElementById('waiterid').value+"')";
+        connection.query(sql,function(err,result){
+            if(err) throw err;
+        })
+        document.getElementById("waitername").value="";
+        document.getElementById('waiterid').value="";
+    })
+
+    document.getElementById("showtable3").addEventListener('click',function(){
+        let win1 = new remote.BrowserWindow({
+            parent: remote.getCurrentWindow(),
+            modal: true
+        })
+        win1.loadFile('waiter.html')
+    })
+
+    document.getElementById("search3").addEventListener('click',function(){
+        let win1 = new remote.BrowserWindow({
+            parent: remote.getCurrentWindow(),
+            modal: true
+        })   
+        let search_value = document.getElementById('waiterid').value;
+        win1.loadFile('waiters.html')
+        win1.webContents.on('did-finish-load',()=>{
+            console.log(search_value);
+            win1.webContents.send('value',search_value)
+        })
+    })
+    document.getElementById("button4").addEventListener('click',function(){
+        
+        let sql = "Insert into orders (order_no,number_of_items) VALUES ('"+document.getElementById("order").value+"','"+document.getElementById('orderitems').value+"')";
+        connection.query(sql,function(err,result){
+            if(err) throw err;
+        })
+        document.getElementById("order").value="";
+        document.getElementById('orderitems').value="";
+    })
+
+    document.getElementById("showtable4").addEventListener('click',function(){
+        let win1 = new remote.BrowserWindow({
+            parent: remote.getCurrentWindow(),
+            modal: true
+        })
+        win1.loadFile('order.html')
+    })
+
+    document.getElementById("search4").addEventListener('click',function(){
+        let win1 = new remote.BrowserWindow({
+            parent: remote.getCurrentWindow(),
+            modal: true
+        })   
+        let search_value = document.getElementById('order').value;
+        win1.loadFile('orders.html')
+        win1.webContents.on('did-finish-load',()=>{
+            console.log(search_value);
+            win1.webContents.send('value',search_value)
+        })
+    })
+    document.getElementById("button5").addEventListener('click',function(){
+        
+        let sql = "Insert into bill (bill_no,price,customer) VALUES ('"+document.getElementById("bill-no").value+"','"+document.getElementById('price').value+"','"+document.getElementById('customer').value+"')";
+        connection.query(sql,function(err,result){
+            if(err) throw err;
+        })
+        document.getElementById("bill-no").value="";
+        document.getElementById('price').value="";
+        document.getElementById('customer').value="";
+    })
+
+    document.getElementById("showtable5").addEventListener('click',function(){
+        let win1 = new remote.BrowserWindow({
+            parent: remote.getCurrentWindow(),
+            modal: true
+        })
+        win1.loadFile('bill.html')
+    })
+
+    document.getElementById("search5").addEventListener('click',function(){
+        let win1 = new remote.BrowserWindow({
+            parent: remote.getCurrentWindow(),
+            modal: true
+        })   
+        let search_value = document.getElementById('bill-no').value;
+        win1.loadFile('bills.html')
+        win1.webContents.on('did-finish-load',()=>{
+            console.log(search_value);
+            win1.webContents.send('value',search_value)
+        })
+    })
     </script>
     <script src="click.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>

@@ -29,6 +29,7 @@
                     <div class="col-sm-6">
                         <table id="table">
                         </table>
+                        <button type="button" id="delete">delete</button>
                     </div>
                     <div class="col-sm-3"></div>
                 </div>
@@ -60,6 +61,14 @@
                 {
                     row1.insertCell(i).innerHTML = Object.keys(result[0])[i];
                 }                    
+            })
+            document.getElementById("delete").addEventListener('click',function(){
+            let sql = "delete from bill where bill_no=" + result1;
+            connection.query(sql,function(err,result){
+            if(err) throw err;
+            })
+            document.getElementById("chefname").value = "";
+            document.getElementById('chefid').value = "";
             })
         }) 
     </script>

@@ -10,8 +10,20 @@
     <link rel="stylesheet" href="styles.css"/>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <script src="https://code.jquery.com/jquery-2.2.4.js" integrity="sha256-iT6Q9iMJYuQiMWNd9lDyBUStIq/8PuOW33aOqmvFpqI=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.js"></script>
 </head>
 <body>
+    <script>
+        require('./index');
+        const { remote } = require('electron')
+        const mysql = require('mysql');    
+        var connection = mysql.createConnection({
+           host:'localhost',
+           user:'root',
+            password:'12345678',
+            database:'amigos'
+        });
+    </script>
     <div class="container">
         <div class="row">
             <h1>5 Amigos</h1>
@@ -20,7 +32,7 @@
             <div class="col" ><p class="active" id="chef">Chef</p></div>
             <div class="col" ><p class="active" id="manager">Manager</p></div>
             <div class="col"><p class="active" id="waiter">Waiter</p></div>
-            <div class="col"><p class="active" id="item">Order</p></div>
+            <div class="col"><p class="active" id="item">Item</p></div>
             <div class="col"><p class="active" id="bill">Bill</p></div>
         </div>
         <div class="row menu-card">
@@ -59,9 +71,9 @@
                     <button type="button" id="update3">Update</button>
                 </form>
                 <form id="form4" class="active">
-                    Order no. :<br>
+                    Item name. :<br>
                     <input id="order" type="text" name="name"><br>
-                    Number of items :<br>
+                    price :<br>
                     <input id="orderitems" type="text" name="name"><br><br>
                     <button name="data" type="button" id="button4">Submit</button>
                     <button type="button" id="showtable4">Show Table</button>
@@ -69,16 +81,89 @@
                     <button type="button" id="update4">Update</button>
                 </form>
                 <form id="form5" class="active">
-                    Bill no. :<br>
+                    Customer Name :<br>
+                    <input id="customer" type="text" name="name"><br>
+                    bill no. :<br>
                     <input id="bill-no" type="text" name="name"><br>
                     Price :<br>
-                    <input id="price" type="text" name="name"><br>
-                    Customer :<br>
-                    <input id="customer" type="text" name="name"><br><br>
+                    <input id="price" type="text" name="name"><br><br>
                     <button name="data" type="button" id="button5">Submit</button>
                     <button type="button" id="showtable5">Show Table</button>
                     <button type="button" id="search5">search</button>
                     <button type="button" id="update5">Update</button>
+                    <table id="table" class="tables"></table>
+                    <div style="display:none">
+                        <div class="numberInput" >
+                            <input class="input" type="text" value="0" min="0" />
+                            <span class="arrow up"></span>
+                            <span class="arrow down"></span>
+                        </div>
+                    </div>
+                    <script>
+                        let sql = "select * from menu";
+                        var lists = null;
+                        connection.query(sql,function(err,result){
+                            if(err) throw err;
+                            let table = document.getElementById("table");
+                            lists = result;
+                            for(let i=0;i<result.length;i++)
+                            {
+                                let row = table.insertRow(i);
+                                let count=0;
+                                let ele = document.getElementsByClassName("numberInput");
+                                let cln = ele[0].cloneNode(true);
+                                for( var j in result[i])
+                                {
+                                    row.insertCell(count).innerHTML = result[i][j];
+                                    count++;
+                                } 
+                                row.insertCell(count).appendChild(cln); 
+                            }  
+                            let header = table.createTHead();
+                            var row1 = header.insertRow(0);
+                            for(let i=0;i<Object.keys(result[0]).length;i++)
+                            {
+                                row1.insertCell(i).innerHTML = Object.keys(result[0])[i];
+                            }
+                            row1.insertCell(Object.keys(result[0]).length).innerHTML = "No. of items";                    
+                        
+                            $(function(){
+                            var timeToAccelerate;
+                            var clickedElement;
+                            $('.arrow').on('mousedown',function(){
+                                clickedElement = $(this);
+                                updateValue(clickedElement)
+                                
+                                timeToAccelerate = setInterval(function(){updateValue(clickedElement)},150);
+                                
+                            });
+                            $(document).on('mouseup',function(){
+                                clearInterval(timeToAccelerate);
+                            })
+                            function updateValue(element){
+                            var value  = parseInt(element.siblings('input').val(),10);
+                                if(element.hasClass('up')){
+                                value += 1;
+                                } else {
+                                value -= 1;
+                                if(value<0) value = 0;
+                                }
+                                element.siblings('input').val(value);
+                            }
+                            })
+
+                            setInterval(()=>{
+                                let items = document.getElementsByClassName("input");
+                                let totalprice = 0;
+                                for(let i=0;i<items.length-1;i++)
+                                {
+                                    totalprice+=items[i].value*lists[i]["price"]
+                                }
+                                document.getElementById("price").value = totalprice;
+                            },1500)
+                        })
+                        
+                    </script>
                 </form>
             </div>
             <div class="col-sm-3"></div>                                                                                                                                      
@@ -86,27 +171,17 @@
     </div>
     <script>
         let list=[["chef",1],["manager",0],["waiter",0],["item",0],["bill",0]];
-        require('./index');
 
-        const { remote } = require('electron')
-        const mysql = require('mysql');
-
-         var connection = mysql.createConnection({
-           host:'localhost',
-           user:'root',
-            password:'12345678',
-            database:'amigos'
-            });
-
-        connection.connect(function(err){
-        if(err) throw err;
-        console.log('connected');
-        })
+        // connection.connect(function(err){
+        // if(err) throw err;
+        // console.log('connected');
+        // })
 
     document.getElementById("button1").addEventListener('click',function(){
-        
-        let sql = "Insert into chef (chef_name,Id_no) VALUES ('"+document.getElementById("chefname").value+"','"+document.getElementById('chefid').value+"')";
-        connection.query(sql,function(err,result){
+        let chefname = document.getElementById("chefname").value;
+        let id = document.getElementById('chefid').value;
+        let sql = "Insert into chef (chef_name,Id_no) VALUES (?,?)";
+        connection.query(sql,[chefname,id],function(err,result){
             if(err) throw err;
         })
         document.getElementById("chefname").value = "";
@@ -135,8 +210,10 @@
     })
 
     document.getElementById("update1").addEventListener('click',function(){
-            let sql = "update chef set chef_name = '" + document.getElementById('chefname').value + "' where Id_no=" + document.getElementById('chefid').value;
-            connection.query(sql,function(err,result){
+        let chefname = document.getElementById("chefname").value;
+        let id = document.getElementById('chefid').value;
+            let sql = "update chef set chef_name = ? where Id_no=?";
+            connection.query(sql,[chefname,id],function(err,result){
             if(err) throw err;
             })
             document.getElementById('chefid').value = "";
@@ -144,9 +221,11 @@
          })
 
     document.getElementById("button2").addEventListener('click',function(){
-        
-        let sql = "Insert into manager (manager_name,Id_no,contact_no) VALUES ('"+document.getElementById("managername").value+"','"+document.getElementById('managerid').value+"','"+document.getElementById('managercontact').value+"')";
-        connection.query(sql,function(err,result){
+        let manager = document.getElementById("managername").value;
+        let id = document.getElementById('managerid').value;
+        let contact = document.getElementById('managercontact').value;
+        let sql = "Insert into manager (manager_name,Id_no,contact_no) VALUES (?,?,?)";
+        connection.query(sql,[manager,id,contact],function(err,result){
             if(err) throw err;
         })
         document.getElementById("managername").value = "";
@@ -166,7 +245,7 @@
         let win1 = new remote.BrowserWindow({
             parent: remote.getCurrentWindow(),
             modal: true
-        })   
+        })
         let search_value = document.getElementById('managerid').value;
         win1.loadFile('managers.html')
         win1.webContents.on('did-finish-load',()=>{
@@ -175,8 +254,11 @@
     })
 
     document.getElementById("update2").addEventListener('click',function(){
-            let sql = "update manager set manager_name = '" + document.getElementById('managername').value +"',contact_no=" + document.getElementById('managercontact').value+" where Id_no=" + document.getElementById('managerid').value;
-            connection.query(sql,function(err,result){
+        let manager = document.getElementById("managername").value;
+        let id = document.getElementById('managerid').value;
+        let contact = document.getElementById('managercontact').value;
+            let sql = "update manager set manager_name = ?,contact_no=? where Id_no=?";
+            connection.query(sql,[manager,contact,id],function(err,result){
             if(err) throw err;
             })
             document.getElementById("managername").value = "";
@@ -185,9 +267,10 @@
          })
 
     document.getElementById("button3").addEventListener('click',function(){
-        
-        let sql = "Insert into waiter (waiter_name,Id_no) VALUES ('"+document.getElementById("waitername").value+"','"+document.getElementById('waiterid').value+"')";
-        connection.query(sql,function(err,result){
+        let waitername=document.getElementById("waitername").value;
+        let waiterid=document.getElementById('waiterid').value
+        let sql = "Insert into waiter (waiter_name,Id_no) VALUES (?,?)";
+        connection.query(sql,[waitername,waiterid],function(err,result){
             if(err) throw err;
         })
         document.getElementById("waitername").value="";
@@ -215,8 +298,10 @@
     })
 
     document.getElementById("update3").addEventListener('click',function(){
-            let sql = "update waiter set waiter_name = '" + document.getElementById('waitername').value +"' where Id_no=" + document.getElementById('waiterid').value;
-            connection.query(sql,function(err,result){
+        let waitername=document.getElementById("waitername").value;
+        let waiterid=document.getElementById('waiterid').value
+            let sql = "update waiter set waiter_name = ? where Id_no=?";
+            connection.query(sql,[waitername,waiterid],function(err,result){
             if(err) throw err;
             })
             document.getElementById("waitername").value="";
@@ -224,9 +309,10 @@
          })
 
     document.getElementById("button4").addEventListener('click',function(){
-        
-        let sql = "Insert into orders (order_no,number_of_items) VALUES ('"+document.getElementById("order").value+"','"+document.getElementById('orderitems').value+"')";
-        connection.query(sql,function(err,result){
+        let order = document.getElementById("order").value;
+        let items = document.getElementById('orderitems').value;
+        let sql = "Insert into menu (name,price) VALUES (?,?)";
+        connection.query(sql,[order,items],function(err,result){
             if(err) throw err;
         })
         document.getElementById("order").value="";
@@ -254,8 +340,10 @@
     })
 
     document.getElementById("update4").addEventListener('click',function(){
-            let sql = "update orders set number_of_items = " + document.getElementById('orderitems').value +" where order_no=" + document.getElementById('order').value;
-            connection.query(sql,function(err,result){
+        let order = document.getElementById("order").value;
+        let items = document.getElementById('orderitems').value;
+            let sql = "update menu set price = ? where name=?";
+            connection.query(sql,[items,order],function(err,result){
             if(err) throw err;
             })
             document.getElementById("order").value="";
@@ -263,14 +351,21 @@
          })
 
     document.getElementById("button5").addEventListener('click',function(){
-        
-        let sql = "Insert into bill (bill_no,price,customer) VALUES ('"+document.getElementById("bill-no").value+"','"+document.getElementById('price').value+"','"+document.getElementById('customer').value+"')";
-        connection.query(sql,function(err,result){
+        let bill = document.getElementById("bill-no").value;
+        let price = document.getElementById('price').value;
+        let customer =document.getElementById('customer').value;
+        let sql = "Insert into bill (bill_no,price,customer) VALUES (?,?,?)";
+        connection.query(sql,[bill,price,customer],function(err,result){
             if(err) throw err;
         })
         document.getElementById("bill-no").value="";
         document.getElementById('price').value="";
         document.getElementById('customer').value="";
+        let items = document.getElementsByClassName("input");
+        for(let i=0;i<items.length-1;i++)
+        {
+            items[i].value= 0;
+        }
     })
 
     document.getElementById("showtable5").addEventListener('click',function(){
@@ -293,8 +388,11 @@
         })
     })
     document.getElementById("update5").addEventListener('click',function(){
-            let sql = "update bill set customer = '" + document.getElementById('customer').value +"',price=" + document.getElementById('price').value+" where bill_no=" + document.getElementById('bill-no').value;
-            connection.query(sql,function(err,result){
+        let bill = document.getElementById("bill-no").value;
+        let price = document.getElementById('price').value;
+        let customer =document.getElementById('customer');
+            let sql = "update bill set customer = ?,price=? where bill_no=?";
+            connection.query(sql,[customer,price,bill],function(err,result){
             if(err) throw err;
             })
             document.getElementById("bill-no").value="";

@@ -90,3 +90,133 @@ form{
     border-radius:1vh;
 }
 
+#table{
+    width:100%;
+    margin-top:5vh;
+}
+
+#table,th{
+    border: 3px solid rgba(255, 255, 0, 1) ;
+}
+
+td{
+    background-color:rgb(216, 140, 54);
+    border-bottom: 3px solid rgba(255, 255, 0,1);
+}
+
+.tables{
+    width:100%;
+}
+
+.numberInput {
+    width: 45px;
+    height: 30px;
+    position: relative;
+    border: 1px solid #CCC;
+    border-radius: 3px;
+    overflow: hidden;
+    margin-left: 6rem; 
+  }
+  p {
+    margin: 0 0 10px 0;
+  }
+  .normalInput {
+    width: 45px;
+    height: 30px;
+    border: 1px solid #CCC;
+    border-radius: 3px;
+    outline: 0;
+    box-sizing: border-box;
+    font-size: 18px;
+    padding: 3px 0px 0px 4px;
+  }
+  .numberInput input {
+    border: none;
+    outline: 0;
+    width: 100%;
+    height: 100%;
+    padding: 3px 15px 0px 4px;
+    font-size: 18px;
+    box-sizing: border-box;
+  }
+  
+  .arrow {
+    background: #F2F2F2;
+    height: 50%;
+    width: 16px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    display: block;
+    cursor: pointer;
+  }
+  .arrow:after {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    content: '';
+    width: 0; 
+      height: 0; 
+      border-left: 4px solid transparent;
+      border-right: 4px solid transparent;
+    transform: translate(-50%,-50%);
+  }
+  .arrow:hover{
+    background: #BABABA;
+  }
+  .arrow:active {
+    background: #CCC;
+  }
+  .arrow.down {
+    bottom: 0;
+    top: auto;
+    border-top: 1px solid #D6D6D6;
+  }
+  .arrow.up:after {
+    border-bottom: 4px solid #AFAFAF;
+  }
+  .arrow.down:after {
+    border-top: 4px solid #AFAFAF;
+  }
+  .arrow:hover:after {
+    border-top-color: #FFF;
+    border-bottom-color: #FFF;
+  }
+
+  #form5{
+    height:40vh;
+    overflow-y: scroll;
+  }
+
+  #form5::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  .menu{
+      padding:0!important;
+  }
+   /* Estilos barra (thumb) de scroll */
+   #form5::-webkit-scrollbar-thumb {
+    background: rgb(226, 149, 5);
+    border-radius: 4px;
+  }
+  
+  #form5::-webkit-scrollbar-thumb:active {
+    background-color: #999999;
+  }
+  
+  #form5::-webkit-scrollbar-thumb:hover {
+    background: #b3b3b3;
+    box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.2);
+  }
+  
+   /* Estilos track de scroll */
+   #form5::-webkit-scrollbar-track {
+    background: #e1e1e1;
+    border-radius: 4px;
+  }
+  
+  #form5::-webkit-scrollbar-track:hover, 
+  #form5::-webkit-scrollbar-track:active {
+    background: #d4d4d4;
+  }

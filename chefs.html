@@ -40,8 +40,9 @@
 
     <script type='text/javascript'>
         require('electron').ipcRenderer.on('value',(event,result1)=>{
-            let sql = "select * from chef where Id_no=" + result1;
-            connection.query(sql,function(err,result){
+            let k=result1;
+            let sql = "select * from chef where Id_no=?";
+            connection.query(sql,[k],function(err,result){
                 if(err) throw err;
                 let table = document.getElementById("table");
                 for(let i=0;i<result.length;i++)
@@ -64,7 +65,7 @@
 
             document.getElementById("delete").addEventListener('click',function(){
             let sql = "delete from chef where Id_no=" + result1;
-            connection.query(sql,function(err,result){
+            connection.query(sql,[result1],function(err,result){
             if(err) throw err;
             })
             document.getElementById('chefid').value = "";

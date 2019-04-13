@@ -2,8 +2,7 @@ const { app , BrowserWindow } = require('electron')
 
 function createWindow(){
     let win = new BrowserWindow({ width:1100 , height:620})
-    win.loadFile('index.html')
-    // win.webContents.openDevTools()
+    win.loadFile('main.html')
     win.on('closed',()=>{
         win = null
     })

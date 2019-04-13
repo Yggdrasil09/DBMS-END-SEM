@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>5-Amigos</title>
+    <link rel="stylesheet" href="main.css">
+    <script src="https://www.gstatic.com/firebasejs/5.9.3/firebase.js"></script>
+</head>
+<body>
+    <div class="home-page">
+        <div class="header state1 active">
+            <h1>5 Amigos</h1>
+            <h4>Enter Superuser Details :</h4>
+            <form class="login-form" >
+                <input type="text" placeholder="Email Id :" id= "email" name="uLogin"/>
+                <input type="password" placeholder="Password :" id="password" name="pLogin"/>
+                <button type="button" id="login" >CHECK</button>
+            </form>
+        </div>
+        <div class="header state2 active">
+            <h1>5 Amigos</h1>
+            <h4>Enter NewUser Details :</h4>
+            <form class="login-form" >
+                <input type="text" placeholder="Email Id :" id= "new_email" name="uLogin"/>
+                <input type="password" placeholder="Password :" id="new_password" name="pLogin"/>
+                <button type="button" id="adduser" >ADD</button>
+            </form>
+        </div>
+    </div>
+    <script>
+        window.onload = ()=>{
+            document.getElementsByClassName('header')[1].classList.toggle('active');
+        }
+    </script>
+    <script>
+        require('./authentication.js');
+        const remote = require('electron').remote;
+        var admin = require('firebase-admin');
+
+        var serviceAccount = require('/home/shashank/Desktop/DBMS-END-SEM/credential.json');
+
+        admin.initializeApp({
+            credential: admin.credential.cert(serviceAccount),
+            databaseURL: 'https://amigos-13445.firebaseio.com/'
+        });
+
+        document.getElementById('login').addEventListener('click',()=>{
+            firebase.auth().signInWithEmailAndPassword(document.getElementById('email').value,document.getElementById('password').value).then(()=>{
+                alert("Enter New-User Details")
+                document.getElementsByClassName('header')[0].classList.toggle('active');
+                document.getElementsByClassName('header')[1].classList.toggle('active');
+            }).catch((error)=>{
+                if(error!=null)
+                {
+                    alert("Wrong Email or Password !!!");
+                    console.log(error.message);
+                    return;
+                }
+            })
+        })
+
+        admin.auth().getUser('iC94HNdh0mcB16ylV6222R61OY63').then(function(userRecord) {
+            // See the UserRecord reference doc for the contents of userRecord.
+            console.log('Successfully fetched user data:', userRecord.toJSON());
+        })
+        .catch(function(error) {
+            console.log('Error fetching user data:', error);
+        });
+        document.getElementById('adduser').addEventListener('click',()=>{
+            admin.auth().createUser({
+                email: document.getElementById('new_email').value,
+                emailVerified: false,
+                password:document.getElementById('new_password').value,
+                disabled: false
+            }).then(function(userRecord) {
+                alert("New User Added !")
+                console.log('Successfully created new user:', userRecord.uid);
+            })
+            .catch(function(error) {
+                alert("Something went wrong!!")
+                console.log('Error creating new user:', error);
+            });  
+            var user = firebase.auth().currentUser;
+
+            user.sendEmailVerification().then(function() {
+            // Email sent.
+            }).catch(function(error) {
+            // An error happened.
+            });
+
+            document.getElementById('new_email').value = "";
+            document.getElementById('new_password').value = "";
+            var window = remote.getCurrentWindow();
+            window.close();
+        })
+    </script>
+</body>
+</html>
